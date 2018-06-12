@@ -9,9 +9,12 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  Alert
 } from 'react-native';
 
+import Header from './src/component/Header'
+import MenuButton from './src/component/MenuButton'
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
     'Cmd+D or shake for dev menu',
@@ -19,10 +22,17 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
-export default class App extends Component<{}> {
+export default class App extends Component {
+  _onMenuClick(title, tag) {
+    Alert.alert('提示', '你点击了:' + title + " Tag:" + tag);
+}
   render() {
     return (
       <View style={styles.container}>
+      <Header />
+      <MenuButton renderIcon={require('./src/images/home_icons/wdgz.png')}
+                                    showText={'我的关注'} tag={'wdgz'}
+                                    onClick={this._onMenuClick}/>
         <Text style={styles.welcome}>
           Welcome to React Native!
         </Text>
