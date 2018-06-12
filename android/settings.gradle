@@ -1,0 +1,3 @@
+rootProject.name = 'aitao_user_front'
+
+include ':app'
