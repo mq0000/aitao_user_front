@@ -1,4 +1,10 @@
 {
   "name": "aitao_user_front",
-  "displayName": "aitao_user_front"
+  "displayName": "aitao_user_front",
+  "expo": {
+    "slug": "aitao_user_front",
+    "name": "aitao_user_front",
+    "sdkVersion": "24.0.0",
+    "entryPoint": "/Users/SuperMa/project/react/aitao_user_front/.vscode/exponentIndex.js"
+  }
 }
