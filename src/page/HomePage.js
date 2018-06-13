@@ -15,7 +15,8 @@ import {
 } from 'react-native';
 //import ViewPager from 'react-native-viewpager';
 import MenuButton from '../component/MenuButton';
-
+import HeaderComponent from '../component/HeaderComponent';
+import SwiperComponent from '../component/SwiperComponent'
 const BANNER_IMGS = [
     require('../images/banner/1.jpg'),
     require('../images/banner/2.jpg'),
@@ -173,12 +174,16 @@ alignItems: 'center'}}>
 
     render() {
         return (
+            <View style={{flex: 1}}>
+            <HeaderComponent />
+            
             <ListView
                 style={{flex:1,backgroundColor:'white'}}
                 dataSource={this.state.listData}
                 renderRow={this._renderRow}
                 renderHeader={()=>{return(
                 <View>
+                    <SwiperComponent />
                     <View style={styles.menuView}>
                         <Text style={{color:'#6d46ac',flex:1,fontSize:12,alignItems:'center'}}>精选品牌 好物易购</Text>
                         <Text style={{color:'#6d46ac',flex:1,fontSize:12,alignItems:'center'}}>爱淘自营 正品保证</Text>
@@ -244,6 +249,7 @@ alignItems: 'center'}}>
                     <Text style={{color:'#7f7f7f',fontSize:12,padding:10}}>猜你喜欢</Text>
                 </View>)}}>
             </ListView>
+            </View >
         )
     }
 }

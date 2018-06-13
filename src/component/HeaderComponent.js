@@ -7,7 +7,7 @@ import {
     StyleSheet
 } from 'react-native';
 
-export default class Header extends Component {
+export default class HeaderComponent extends Component {
     render() {
         return (
             <View style={styles.container}>

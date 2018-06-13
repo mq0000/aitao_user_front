@@ -13,7 +13,6 @@ import {
   Alert
 } from 'react-native';
 
-import Header from './src/component/Header'
 import MenuButton from './src/component/MenuButton'
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -29,7 +28,6 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-      <Header />
       <MenuButton renderIcon={require('./src/images/home_icons/wdgz.png')}
                                     showText={'我的关注'} tag={'wdgz'}
                                     onClick={this._onMenuClick}/>

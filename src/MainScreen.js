@@ -7,7 +7,7 @@ import {
     View,
 } from 'react-native';
 
-import Header from './component/Header';
+
 import HomePage from './page/HomePage';
 import ClassifyPage from './page/ClassifyPage'
 import DealPage from './page/DealPage'
@@ -61,7 +61,7 @@ export default class MainScreen extends Component {
     render() {
         return (
             <View style={{flex: 1}}>
-                <Header />
+                
                 <TabNavigator hidesTabTouch={true} tabBarStyle={styles.tab}>
                     {this._renderTabItem(HOME_NORMAL, HOME_FOCUS, HOME, <HomePage nav={this.props.nav}/>)}
                     {this._renderTabItem(CATEGORY_NORMAL, CATEGORY_FOCUS, CATEGORY, <ClassifyPage nav={this.props.nav}/>)}
