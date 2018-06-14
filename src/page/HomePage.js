@@ -9,75 +9,47 @@ import {
     Alert,
     ListView,
     RefreshControl,
-    Dimensions,
     PixelRatio,
+    SectionList,
+    Dimensions,
     TouchableWithoutFeedback
 } from 'react-native';
 //import ViewPager from 'react-native-viewpager';
 import MenuButton from '../component/MenuButton';
 import HeaderComponent from '../component/HeaderComponent';
 import SwiperComponent from '../component/SwiperComponent'
-const BANNER_IMGS = [
-    require('../images/banner/1.jpg'),
-    require('../images/banner/2.jpg'),
-    require('../images/banner/3.jpg'),
-    require('../images/banner/4.jpg')
-];
 
 const len = 160;
-
+dimensions = Dimensions.get('window');
 export default class HomePage extends Component {
 
     constructor(props) {
         super(props);
 
         // 用于构建DataSource对象
-        // var dataSource = new ViewPager.DataSource({
-        //     pageHasChanged: (p1, p2) => p1 !== p2,
-        // });
         this._onMenuClick = this._onMenuClick.bind(this);
         this._onRecommendClick = this._onRecommendClick.bind(this);
-        this._renderRow = this._renderRow.bind(this);
-        var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         // 实际的DataSources存放在state中
         this.state = {
-            //dataSource: dataSource.cloneWithPages(BANNER_IMGS),
-            listData: ds
+            sections: []
         }
     }
 
     componentWillMount() {
         //fetch('http://m.jd.com/index/recommend.action?_format_=json&page=1')
-        fetch('https://sim.aitaoec.com/api/v1/product/list')
+        fetch('https://sim.aitaoec.com/api/v1/shop/goods/home')
             .then((res)=> res.json())
             .then((str)=> {
-                //let arr = JSON.parse(str.recommend).wareInfoList;
-                let products = str.data.products;
-                let arr = [];
-                for (let i = 0; i < products.length; i++)
-                {
-                    arr = [...arr , ...products[i].items];
-                }
-                var rows = [];
-                for (let i = 0; i < arr.length; i += 2) {
-                    var item = {id: i, left: null, right: null};
-                    item.left = (arr[i]);
-                    if (i < arr.length - 1) {
-                        item.right = (arr[i + 1]);
+                let array = []
+                for (let [_key, _value] of Object.entries(str.data)) {
+                    let items = []
+                    for (let i=0; i < _value.length; i+=2) {
+                        items = [...items, ...[[_value[i],_value[i+1]]] ]
                     }
-                    rows.push(item);
+                    array = [...array , ...[{key:_key, data: items}]]
                 }
-                var ds = this.state.listData.cloneWithRows(rows);
-                this.setState({listData: ds});
+                this.setState({sections: array});
             });
-    }
-
-    _renderPage(data, pageID) {
-        return (
-            <Image
-                source={data}
-                style={styles.page}/>
-        );
     }
 
     _onMenuClick(title, tag) {
@@ -93,162 +65,153 @@ export default class HomePage extends Component {
         });
     }
 
-    _renderItem(_isLoadRight){
-        if (_isLoadRight)
-        {
-
-        }
-        else
-        {
-
-        }
+    //订售 积分 订单 账户
+    _renderMenu = () => {
         return (
-            <TabNavigator.Item
-                selected={this.state.selectedTab === tag}
-                renderIcon={() => <Image style={styles.tabIcon} source={img}/>}
-                renderSelectedIcon={() => <Image style={styles.tabIcon} source={selectedImg}/>}
-                onPress={() => this.setState({ selectedTab: tag })}>
-                {childView}
-            </TabNavigator.Item>
-        );
+            <View style={styles.menuView}>
+            <MenuButton renderIcon={require('../images/home_icons/wdgz.png')}
+                        showText={'订售'} tag={'wdgz'}
+                        onClick={this._onMenuClick}/>
+            <MenuButton renderIcon={require('../images/home_icons/wlcx.png')}
+                        showText={'积分'} tag={'wlcx'}
+                        onClick={this._onMenuClick}/>
+            <MenuButton renderIcon={require('../images/home_icons/cz.png')}
+                        showText={'订单'} tag={'cz'}
+                        onClick={this._onMenuClick}/>
+            <MenuButton renderIcon={require('../images/home_icons/dyp.png')}
+                        showText={'账户'} tag={'dyp'}
+                        onClick={this._onMenuClick}/>
+            </View>
+        )
     }
 
-    _renderRow(rowData) {
-        rowData.left = rowData.left || {}
-        let isLoadRight = rowData.right && true || false
-        let leftImageUrl = rowData.left.img
-        let leftName = rowData.left.name
-        let leftPrice = rowData.left.price
-        let rightName = isLoadRight && rowData.right.name
-        let rightPrice = isLoadRight && rowData.right.price
-        let rightImageUrl = isLoadRight && rowData.right.img
-
-        let rightItem = 
-            isLoadRight && <TouchableWithoutFeedback style={{flex:1,alignItems:'center'}}
-                                          onPress={()=>{this._onRecommendClick(rowData.right.wareId)}}>
+    _renderHot = () => {
+        return (
+            <View>
+                <View style={{height:30, flexDirection:'row',justifyContent:'space-around'}}>
+                    <View style={{justifyContent: 'center'}}>
+                        <View style={{justifyContent: 'center' , flexDirection:'row'}}>
+                            <Image resizeMode={'contain'} style={{width:20, height: 20}} source={require('../images/home/gou.jpg')} />
+                            <Text style={{color:'#6d46ac',fontSize:12,justifyContent: 'center'}}>精选品牌 好物易购</Text>
+                        </View>
+                        
+                    </View>
+                    <View style={{justifyContent: 'center', }}>
+                        <View style={{justifyContent: 'center' , flexDirection:'row'}}>
+                            <Image resizeMode={'contain'} style={{width:20, height: 20}} source={require('../images/home/gou.jpg')} />
+                            <Text style={{color:'#6d46ac',fontSize:12,justifyContent: 'center'}}>爱淘自营 正品保证</Text>   
+                        </View>
+                        
+                    </View>
+                    <View style={{justifyContent: 'center' }}>
+                        <View style={{justifyContent: 'center' , flexDirection:'row'}}>
+                            <Image resizeMode={'contain'} style={{width:20, height: 20}} source={require('../images/home/gou.jpg')} />
+                            <Text style={{color:'#6d46ac',fontSize:12,justifyContent: 'center'}}>积分全场任意兑换</Text>
+                        </View>
+                        
+                    </View> 
+                </View>
+                <SwiperComponent />
+                <View style={styles.menuView}>
                     <View style={{flex:1,alignItems:'center'}}>
-                        <Image resizeMode={'stretch'} source={{uri: rightImageUrl}}
-                            style={{width:len,height:len}}/>
-                        <Text numberOfLines={2} style={styles.recommendTitle}>{rightName}</Text>
-                        <View style={{width:len,borderWidth:0.5,borderColor:'#d7d7d7'}}/>
-                        <View
-                            style={{flexDirection:'row',width:len, marginTop: 6, marginBottom: 22,alignItems:'flex-start'}}>
-                            <Text style={styles.priceText}>￥{rightPrice}</Text>
-                            <TouchableWithoutFeedback>
-                                <View style={{width:50,height:18,borderWidth:1,borderColor:'#999999',borderRadius:3,justifyContent: 'center',
-alignItems: 'center'}}>
-                                    <Text style={{color:'#999999',fontSize:12,textAlign:'center'}}>看相似</Text>
-                                </View>
-                            </TouchableWithoutFeedback>
+                        <Image resizeMode={'contain'} style={{width:200,height:200}} source={{uri: 'https://image100.oss-cn-shanghai.aliyuncs.com/test/image/classify01.jpg?x-oss-process=style/small'}}/>
+                    </View>
+                    <View style={{flex:1,alignItems:'center' , flexDirection: 'column', paddingRight:20}}>
+                        <View style={{flex:1,alignItems:'center'}}>
+                            <Image resizeMode={'contain'} style={{width:200,height:100}} source={{uri: 'https://image100.oss-cn-shanghai.aliyuncs.com/test/image/classify02.jpg?x-oss-process=style/small'}}/>
+                        </View>
+                        <View style={{flex:1, alignItems:'center'}}>
+                            <View style={{flex:1,alignItems:'center' , flexDirection:'row'}}>
+                                <Image resizeMode={'contain'} style={{width:100,height:100}} source={{uri: 'https://image100.oss-cn-shanghai.aliyuncs.com/test/image/classify03.jpg?x-oss-process=style/small'}}/>
+                                <Image resizeMode={'contain'} style={{width:100,height:100}} source={{uri: 'https://image100.oss-cn-shanghai.aliyuncs.com/test/image/classify04.jpg?x-oss-process=style/small'}}/>
+                            </View>
                         </View>
                     </View>
-                </TouchableWithoutFeedback> || <View style={{flex:1,alignItems:'center'}}></View>
+                </View>
+            </View>
+        )
+    }
+
+    _renderItem = (data) => {
+        // const goods_name = data.item.goods_name
+        // const goods_img = 'https://sim.aitaoec.com/' + data.item.goods_img
+        // const goods_id = data.item.goods_id
+        // const market_price = data.item.market_price
+        // const shop_price =  '$:' + data.item.shop_price
+        // const point = '  积分:' + Number.parseInt(data.item.shop_price*100)
+        return (
+            <View style={{flexDirection:'row',justifyContent:'space-around'}}>
+                {/* <View style={{width: dimensions.width/2 - 20,height: dimensions.height/2}}>
+                    <Image resizeMode='cover' style={{alignItems:'center',width:dimensions.width/2 - 20,height:dimensions.width/2}} source={{uri: goods_img}}/>
+                    <Text style={{ 'flexWrap': 'wrap', width: dimensions.width/2 -10, height: 40, alignItems:'center', color: '#5C5C5C', fontSize: 15 }}>{goods_name}</Text>
+                    <View style={{flexDirection:'row'}}>
+                        <Text style={{ height: 30, alignItems:'center', color: '#ff0000', fontSize: 15 }}>{shop_price}</Text>
+                        <Text style={{ height: 30, alignItems:'center', color: '#5C5C5C', fontSize: 15 }}>{point}</Text>
+                    </View>
+                </View> */}
+                {
+                    data.item.map((item, i) => {
+                        if (!item) {
+                            return (<View style={{ width: dimensions.width/2 - 20,height: 250}}></View>)
+                        }
+                        const goods_name = item.goods_name
+                        const goods_img = 'https://sim.aitaoec.com/' + item.goods_img
+                        const goods_id = item.goods_id
+                        const market_price = item.market_price
+                        const shop_price =  '$:' + item.shop_price
+                        const point = '  积分:' + Number.parseInt(item.shop_price*100)
+                        return (
+                            <View style={{ width: dimensions.width/2 - 20,height: 250}}>
+                                <Image resizeMode='cover' style={{alignItems:'center',width:dimensions.width/2 - 20,height:dimensions.width/2}} source={{uri: goods_img}}/>
+                                <Text style={{ 'flexWrap': 'wrap', width: dimensions.width/2 - 10, height: 40, alignItems:'center', color: '#5C5C5C', fontSize: 15 }}>{goods_name}</Text>
+                                <View style={{flexDirection:'row'}}>
+                                    <Text style={{ height: 30, alignItems:'center', color: '#ff0000', fontSize: 15 }}>{shop_price}</Text>
+                                    <Text style={{ height: 30, alignItems:'center', color: '#5C5C5C', fontSize: 15 }}>{point}</Text>
+                                </View>
+                            </View>
+                        )
+                    })
+                }
                 
 
-        return (
-            <View style={{flexDirection:'row'}}>
-                <TouchableWithoutFeedback style={{flex:1,alignItems:'center'}}
-                                          onPress={()=>{this._onRecommendClick(rowData.left.wareId)}}>
-                    <View style={{flex:1,alignItems:'center'}}>
-                        
-                        <Image resizeMode={'stretch'} source={{uri: leftImageUrl}}
-                            style={{width:len,height:len}}/>
-                        <Text numberOfLines={2} style={styles.recommendTitle}>{leftName}</Text>
-                        <View style={{width:len,borderWidth:0.5,borderColor:'#d7d7d7'}}/>
-                        <View
-                            style={{flexDirection:'row',width:len, marginTop: 6, marginBottom: 22,alignItems:'flex-start'}}>
-                            <Text style={styles.priceText}>￥{leftPrice}</Text>
-                            <TouchableWithoutFeedback>
-                                <View style={{width:50,height:18,borderWidth:1,borderColor:'#999999',borderRadius:3,justifyContent: 'center',
-alignItems: 'center'}}>
-                                    <Text style={{color:'#999999',fontSize:12,textAlign:'center'}}>看相似</Text>
-                                </View>
-                            </TouchableWithoutFeedback>
-                        </View>
-                    </View>
-                </TouchableWithoutFeedback>
-                {rightItem}
             </View>
-        );
+        )
+    }
+
+    _renderSection = (data) => {
+        const key = data.section.key
+        let imageUrl = (key === '热销商品' && require('../images/classify/rexiao.jpg') ||
+        key === '推荐商品' && require('../images/classify/xihuan.jpg') ||
+        key === '最新商品' && require('../images/classify/xinpin.jpg'))
+        let icon = require('../images/classify/xinpin.jpg')
+        return (//<Image resizeMode='contain' style={{width:200,height:43}} source={require('../images/classify/xinpin.jpg')}/>
+            <View style={{alignItems: 'center'}}>
+                <Image resizeMode='contain' style={{width:200,height:43}} source={imageUrl}/>
+            </View>)
+        
     }
 
     render() {
+         const array = [
+            { key: "A", data: [{ goods_name: "111" }, { goods_name: "阿玛尼" }, { goods_name: "爱多多" }] },
+            { key: "B", data: [{ goods_name: "表哥" }, { goods_name: "贝贝" }, { goods_name: "表弟" }, { goods_name: "表姐" }, { goods_name: "表叔" }] },
+            { key: "C", data: [{ goods_name: "成吉思汗" }, { goods_name: "超市快递" }] },
+            { key: "D", data: [{ goods_name: "王磊" }, { goods_name: "王者荣耀" }, { goods_name: "往事不能回味" },{ goods_name: "王小磊" }, { goods_name: "王中磊" }, { goods_name: "王大磊" }] },
+        ];
         return (
             <View style={{flex: 1}}>
-            <HeaderComponent />
-            
-            <ListView
-                style={{flex:1,backgroundColor:'white'}}
-                dataSource={this.state.listData}
-                renderRow={this._renderRow}
-                renderHeader={()=>{return(
-                <View>
-                    <SwiperComponent />
-                    <View style={styles.menuView}>
-                        <Text style={{color:'#6d46ac',flex:1,fontSize:12,alignItems:'center'}}>精选品牌 好物易购</Text>
-                        <Text style={{color:'#6d46ac',flex:1,fontSize:12,alignItems:'center'}}>爱淘自营 正品保证</Text>
-                        <Text style={{color:'#6d46ac',flex:1,fontSize:12,alignItems:'center'}}>积分全场任意兑换</Text>
-                    </View>
-                    <View style={styles.menuView}>
-                        <View style={{flex:1,alignItems:'center'}}>
-                            <Image resizeMode={'stretch'} source={{uri: 'https://image100.oss-cn-shanghai.aliyuncs.com/test/image/classify01.jpg?x-oss-process=style/small'}}
-                            style={{width:130,height:367}}/>
-                        </View>
-                        <View style={{flex:1,alignItems:'center' , flexDirection: 'column'}}>
-                            <View style={{flex:1,alignItems:'center'}}>
-                                <Image resizeMode={'stretch'} source={{uri: 'https://image100.oss-cn-shanghai.aliyuncs.com/test/image/classify02.jpg?x-oss-process=style/small'}}
-                                style={{width:130,height:180}}/>
-                            </View>
-                            <View style={{flex:1, alignItems:'center'}}>
-                                <View style={{flex:1,alignItems:'center' , flexDirection:'row'}}>
-                                    <Image resizeMode={'stretch'} 
-                                        source={{uri: 'https://image100.oss-cn-shanghai.aliyuncs.com/test/image/classify03.jpg?x-oss-process=style/small'}}
-                                        style={{width:172,height:179}}/>
-                                    <Image resizeMode={'stretch'} source={{uri: 'https://image100.oss-cn-shanghai.aliyuncs.com/test/image/classify04.jpg?x-oss-process=style/small'}}
-                                    style={{width:172,height:179}}/>
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-                    
-                    {/* <ViewPager
-                        style={{height:130}}
-                        dataSource={this.state.dataSource}
-                        renderPage={this._renderPage}
-                        isLoop={true}
-                        autoPlay={true}/> */}
-                    <View style={styles.menuView}>
-                        <MenuButton renderIcon={require('../images/home_icons/wdgz.png')}
-                                    showText={'订售'} tag={'wdgz'}
-                                    onClick={this._onMenuClick}/>
-                        <MenuButton renderIcon={require('../images/home_icons/wlcx.png')}
-                                    showText={'积分'} tag={'wlcx'}
-                                    onClick={this._onMenuClick}/>
-                        <MenuButton renderIcon={require('../images/home_icons/cz.png')}
-                                    showText={'订单'} tag={'cz'}
-                                    onClick={this._onMenuClick}/>
-                        <MenuButton renderIcon={require('../images/home_icons/dyp.png')}
-                                    showText={'账户'} tag={'dyp'}
-                                    onClick={this._onMenuClick}/>
-                    </View>
-                    {/* <View style={styles.menuView}>
-                        <MenuButton renderIcon={require('../images/home_icons/yxcz.png')}
-                                    showText={'游戏充值'} tag={'yxcz'}
-                                    onClick={this._onMenuClick}/>
-                        <MenuButton renderIcon={require('../images/home_icons/xjk.png')}
-                                    showText={'小金库'} tag={'xjk'}
-                                    onClick={this._onMenuClick}/>
-                        <MenuButton renderIcon={require('../images/home_icons/ljd.png')}
-                                    showText={'领京豆'} tag={'ljd'}
-                                    onClick={this._onMenuClick}/>
-                        <MenuButton renderIcon={require('../images/home_icons/gd.png')}
-                                    showText={'更多'} tag={'gd'}
-                                    onClick={this._onMenuClick}/>
-                    </View> */}
-                    <View style={{marginTop:15,borderWidth:0.5,borderColor:'#ccc'}}/>
-                    <Text style={{color:'#7f7f7f',fontSize:12,padding:10}}>猜你喜欢</Text>
-                </View>)}}>
-            </ListView>
+                <HeaderComponent />
+                <SectionList
+                    renderSectionHeader={this._renderSection}
+                    renderItem={this._renderItem}
+                    sections={this.state.sections}
+                    stickySectionHeadersEnabled={false}
+                    ItemSeparatorComponent={() => <View><Text></Text></View>}
+                    ListHeaderComponent={this._renderHot}
+                    numColumns={2}
+                    horizontal={false}
+                    //ListFooterComponent=
+                />            
             </View >
         )
     }

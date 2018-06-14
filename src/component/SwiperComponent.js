@@ -23,7 +23,7 @@ export default class SwiperComponent extends Component {
                     <Image source={require('../images/banner/1.jpg')} style={styles.img}/>
                     <Image source={require('../images/banner/2.jpg')} style={styles.img}/>
                     <Image source={require('../images/banner/3.jpg')} style={styles.img}/>
-                    <Image source={require('../images/banner/4.jpg')} style={styles.img}/>
+                    {/* <Image source={require('../images/banner/4.jpg')} style={styles.img}/> */}
                 </Swiper>
             </View>
         )
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',   // 水平排布
         paddingLeft: 10,
         paddingRight: 10,
-        backgroundColor: '#d74047',
+        backgroundColor: '#ffffff',
         alignItems: 'center'  // 使元素垂直居中排布, 当flexDirection为column时, 为水平居中
     },
     swiper: {},

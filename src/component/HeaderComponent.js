@@ -11,12 +11,12 @@ export default class HeaderComponent extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Image source={require('../images/header/header_logo.png')} style={styles.logo}/>
+                <Image source={require('../images/home/kefu.png')} style={styles.logo}/>
                 <View style={styles.searchBox}>
                     <Image source={require('../images/header/icon_search.png')} style={styles.searchIcon}/>
                     <TextInput
                         keyboardType='web-search'
-                        placeholder='搜索京东商品/店铺'
+                        placeholder='搜索商品'
                         style={styles.inputText}/>
                     <Image source={require('../images/header/icon_voice.png')} style={styles.voiceIcon}/>
                 </View>
@@ -33,12 +33,12 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         paddingTop: Platform.OS === 'ios' ? 20 : 0,  // 处理iOS状态栏
         height: Platform.OS === 'ios' ? 68 : 48,   // 处理iOS状态栏
-        backgroundColor: '#d74047',
+        backgroundColor: '#D15FEE',
         alignItems: 'center'  // 使元素垂直居中排布, 当flexDirection为column时, 为水平居中
     },
     logo: {
-        height: 24,
-        width: 64,
+        height: 40,
+        width: 40,
         resizeMode: 'stretch'  // 设置拉伸模式
     },
     searchBox: {
