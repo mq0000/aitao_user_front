@@ -9,7 +9,7 @@ import {
     Alert,
     ListView,
     RefreshControl,
-    PixelRatio,
+    TouchableHighlight,
     SectionList,
     Dimensions,
     TouchableWithoutFeedback
@@ -25,18 +25,13 @@ export default class HomePage extends Component {
 
     constructor(props) {
         super(props);
-
-        // 用于构建DataSource对象
-        this._onMenuClick = this._onMenuClick.bind(this);
-        this._onRecommendClick = this._onRecommendClick.bind(this);
-        // 实际的DataSources存放在state中
+        this._onRecommendClick = this._onRecommendClick.bind(this)
         this.state = {
             sections: []
         }
     }
 
     componentWillMount() {
-        //fetch('http://m.jd.com/index/recommend.action?_format_=json&page=1')
         fetch('https://sim.aitaoec.com/api/v1/shop/goods/home')
             .then((res)=> res.json())
             .then((str)=> {
@@ -52,12 +47,12 @@ export default class HomePage extends Component {
             });
     }
 
-    _onMenuClick(title, tag) {
+    _onMenuClick = (title, tag) => {
         Alert.alert('提示', '你点击了:' + title + " Tag:" + tag);
     }
 
-    _onRecommendClick(wareId) {
-        let url = 'http://item.m.jd.com/product/' + wareId + '.html';
+    _onRecommendClick(productId) {
+        let url = 'https://sim.aitaoec.com/h5/#/product/' + productId
         this.props.nav.push({
             id: 'webview',
             title: 'webiew',
@@ -112,6 +107,7 @@ export default class HomePage extends Component {
                     </View> 
                 </View>
                 <SwiperComponent />
+                {this._renderMenu()}
                 <View style={styles.menuView}>
                     <View style={{flex:1,alignItems:'center'}}>
                         <Image resizeMode={'contain'} style={{width:200,height:200}} source={{uri: 'https://image100.oss-cn-shanghai.aliyuncs.com/test/image/classify01.jpg?x-oss-process=style/small'}}/>
@@ -162,12 +158,16 @@ export default class HomePage extends Component {
                         const point = '  积分:' + Number.parseInt(item.shop_price*100)
                         return (
                             <View style={{ width: dimensions.width/2 - 20,height: 250}}>
+                            <TouchableHighlight  style={{flex:1,alignItems:'center'}} onPress={()=>{this._onRecommendClick(goods_id)}}>
+                                <View>
                                 <Image resizeMode='cover' style={{alignItems:'center',width:dimensions.width/2 - 20,height:dimensions.width/2}} source={{uri: goods_img}}/>
                                 <Text style={{ 'flexWrap': 'wrap', width: dimensions.width/2 - 10, height: 40, alignItems:'center', color: '#5C5C5C', fontSize: 15 }}>{goods_name}</Text>
                                 <View style={{flexDirection:'row'}}>
                                     <Text style={{ height: 30, alignItems:'center', color: '#ff0000', fontSize: 15 }}>{shop_price}</Text>
                                     <Text style={{ height: 30, alignItems:'center', color: '#5C5C5C', fontSize: 15 }}>{point}</Text>
                                 </View>
+                                </View>
+                            </TouchableHighlight>
                             </View>
                         )
                     })

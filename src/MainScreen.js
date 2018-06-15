@@ -16,20 +16,20 @@ import PersonalPage from './page/PersonalPage'
 import TabNavigator from 'react-native-tab-navigator';
 
 const HOME = 'home';
-const HOME_NORMAL = require('./images/tabs/home_normal.png');
-const HOME_FOCUS = require('./images/tabs/home_focus.png');
-const CATEGORY = 'category';
-const CATEGORY_NORMAL = require('./images/tabs/category_normal.png');
-const CATEGORY_FOCUS = require('./images/tabs/category_focus.png');
-const FAXIAN = 'faxian';
-const FAXIAN_NORMAL = require('./images/tabs/faxian_normal.png');
-const FAXIAN_FOCUS = require('./images/tabs/faxian_focus.png');
+const HOME_NORMAL = require('./images/tabs/首页1.png');
+const HOME_FOCUS = require('./images/tabs/首页2.png');
+const CLASSIFY = 'classify';
+const CLASSIFY_NORMAL = require('./images/tabs/分类1.png');
+const CLASSIFY_FOCUS = require('./images/tabs/分类2.png');
+const DEAL = 'deal';
+const DEAL_NORMAL = require('./images/tabs/商铺1.png');
+const DEAL_FOCUS = require('./images/tabs/商铺2.png');
 const CART = 'cart';
-const CART_NORMAL = require('./images/tabs/cart_normal.png');
-const CART_FOCUS = require('./images/tabs/cart_focus.png');
+const CART_NORMAL = require('./images/tabs/购物车1.png');
+const CART_FOCUS = require('./images/tabs/购物车2.png');
 const PERSONAL = 'personal';
-const PERSONAL_NORMAL = require('./images/tabs/personal_normal.png');
-const PERSONAL_FOCUS = require('./images/tabs/personal_focus.png');
+const PERSONAL_NORMAL = require('./images/tabs/我的1.png');
+const PERSONAL_FOCUS = require('./images/tabs/我的2.png');
 
 export default class MainScreen extends Component {
 
@@ -64,8 +64,8 @@ export default class MainScreen extends Component {
                 
                 <TabNavigator hidesTabTouch={true} tabBarStyle={styles.tab}>
                     {this._renderTabItem(HOME_NORMAL, HOME_FOCUS, HOME, <HomePage nav={this.props.nav}/>)}
-                    {this._renderTabItem(CATEGORY_NORMAL, CATEGORY_FOCUS, CATEGORY, <ClassifyPage nav={this.props.nav}/>)}
-                    {this._renderTabItem(FAXIAN_NORMAL, FAXIAN_FOCUS, FAXIAN, <DealPage nav={this.props.nav}/>)}
+                    {this._renderTabItem(CLASSIFY_NORMAL, CLASSIFY_FOCUS, CLASSIFY, <ClassifyPage nav={this.props.nav}/>)}
+                    {this._renderTabItem(DEAL_NORMAL, DEAL_FOCUS, DEAL, <DealPage nav={this.props.nav}/>)}
                     {this._renderTabItem(CART_NORMAL, CART_FOCUS, CART, <CartPage nav={this.props.nav}/>)}
                     {this._renderTabItem(PERSONAL_NORMAL, PERSONAL_FOCUS, PERSONAL, <PersonalPage nav={this.props.nav}/>)}
                 </TabNavigator>
@@ -77,7 +77,7 @@ export default class MainScreen extends Component {
 const styles = StyleSheet.create({
     tab: {
         height: 52,
-        backgroundColor: '#303030',
+        backgroundColor: '#ffffff',
         alignItems: 'center',
     },
     tabIcon: {
