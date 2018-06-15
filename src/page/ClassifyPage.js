@@ -7,9 +7,11 @@ import {
     Image,
     TextInput,
     Dimensions,
-    FlatList,
+    ListView,
+    Button,
     Text,
 } from 'react-native';
+import MenuButton from '../component/MenuButton';
 const {width,height}=Dimensions.get('window')
 export default class ClassifyPage extends Component {
 
@@ -31,13 +33,19 @@ export default class ClassifyPage extends Component {
             });
     }
 
-      
+    _renderSeparator = (sectionID, rowID, adjacentRowHighlighted) => {
+        return (
+            <View key={`{sectionID}-${rowID}`}
+                style={{height: 1, backgroundColor: '#bfbfbf'}}>
+            </View>
+        );
+    }
 
     render() {
         var data = [];
         data.push({url: 'www.baidu.com', title: '品牌电器'});
         return (
-            <View>
+            <View style={{height:height , width: width}}>
                 <View style={styles.container}>
                     <View style={styles.searchBox}>
                         <Image source={require('../images/header/icon_search.png')} style={styles.searchIcon}/>
@@ -45,17 +53,23 @@ export default class ClassifyPage extends Component {
                             keyboardType='web-search'
                             placeholder='搜索商品'
                             style={styles.inputText}/>
-                        <Image source={require('../images/header/icon_voice.png')} style={styles.voiceIcon}/>
                     </View>
-                    <Image source={require('../images/header/icon_qr.png')} style={styles.scanIcon}/>
+                    <Button
+                        title="取消"
+                        color="#841584"
+                    />
                 </View>
-                <ListView
+                <ListView 
+                    style={{flex: 1,backgroundColor:'white'}}
                     dataSource={this.state.dataSource}
+                    renderSeparator={this._renderSeparator}
                     renderRow={(rowData) => {
+                        const cat_name = rowData.cat_name
+                        const sort_order = rowData.sort_order
                         return (
-                            <View>
-                                <Text>  </Text>
-                                
+                            <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', width:width - 20,height:60}}>
+                                <Text style={{paddingLeft:20,fontSize:14}}> {cat_name} </Text>
+                                <Image resizeMode={'contain'} style={{width:20,height:20}} source={require('../images/classify/箭头_右.png')}/>
                             </View>
                         )
                     }}

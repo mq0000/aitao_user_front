@@ -41,12 +41,12 @@ export default class HomePage extends Component {
             .then((res)=> res.json())
             .then((str)=> {
                 let array = []
-                for (let [_key, _value] of Object.entries(str.data)) {
+                for (let [_name, _value] of Object.entries(str.data)) {
                     let items = []
                     for (let i=0; i < _value.length; i+=2) {
                         items = [...items, ...[[_value[i],_value[i+1]]] ]
                     }
-                    array = [...array , ...[{key:_key, data: items}]]
+                    array = [...array , ...[{key: 'li_' + array.length, name:_name , data: items}]]
                 }
                 this.setState({sections: array});
             });
@@ -179,10 +179,10 @@ export default class HomePage extends Component {
     }
 
     _renderSection = (data) => {
-        const key = data.section.key
-        let imageUrl = (key === '热销商品' && require('../images/classify/rexiao.jpg') ||
-        key === '推荐商品' && require('../images/classify/xihuan.jpg') ||
-        key === '最新商品' && require('../images/classify/xinpin.jpg'))
+        const name = data.section.name
+        let imageUrl = (name === '热销商品' && require('../images/classify/rexiao.jpg') ||
+        name === '推荐商品' && require('../images/classify/xihuan.jpg') ||
+        name === '最新商品' && require('../images/classify/xinpin.jpg'))
         let icon = require('../images/classify/xinpin.jpg')
         return (//<Image resizeMode='contain' style={{width:200,height:43}} source={require('../images/classify/xinpin.jpg')}/>
             <View style={{alignItems: 'center'}}>
@@ -192,12 +192,6 @@ export default class HomePage extends Component {
     }
 
     render() {
-         const array = [
-            { key: "A", data: [{ goods_name: "111" }, { goods_name: "阿玛尼" }, { goods_name: "爱多多" }] },
-            { key: "B", data: [{ goods_name: "表哥" }, { goods_name: "贝贝" }, { goods_name: "表弟" }, { goods_name: "表姐" }, { goods_name: "表叔" }] },
-            { key: "C", data: [{ goods_name: "成吉思汗" }, { goods_name: "超市快递" }] },
-            { key: "D", data: [{ goods_name: "王磊" }, { goods_name: "王者荣耀" }, { goods_name: "往事不能回味" },{ goods_name: "王小磊" }, { goods_name: "王中磊" }, { goods_name: "王大磊" }] },
-        ];
         return (
             <View style={{flex: 1}}>
                 <HeaderComponent />
