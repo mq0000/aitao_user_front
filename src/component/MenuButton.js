@@ -1,5 +1,5 @@
 
-import React , {Component} from 'react'
+import React , {Component} from '../../../../../Library/Caches/typescript/2.9/node_modules/@types/react'
 import {
     View,
     Text,
@@ -8,7 +8,7 @@ import {
     StyleSheet
 } from 'react-native';
 
-import PropTypes from 'prop-types';
+import PropTypes from '../../../../../Library/Caches/typescript/2.9/node_modules/@types/prop-types';
 
 export default class MenuButton extends Component {
 

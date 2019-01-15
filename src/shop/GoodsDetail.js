@@ -1,5 +1,5 @@
 
-import React , {Component} from 'react'
+import React , {Component} from '../../../../../Library/Caches/typescript/2.9/node_modules/@types/react'
 import {
     View,
     Platform,
@@ -15,7 +15,7 @@ const {width,height}=Dimensions.get('window')
 
 export default class GoodsDetail extends Component {
 
-    constructor(props) {
+    q(props) {
         super(props);
         this.state = {
             goodsDetail: {},
