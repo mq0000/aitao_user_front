@@ -52,12 +52,16 @@ export default class HomePage extends Component {
     }
 
     _onRecommendClick(productId) {
-        let url = 'https://sim.aitaoec.com/h5/#/product/' + productId
+        // let url = 'https://sim.aitaoec.com/h5/#/product/' + productId
+        // this.props.nav.push({
+        //     id: 'webview',
+        //     title: 'webiew',
+        //     url: url
+        // });
         this.props.nav.push({
-            id: 'webview',
-            title: 'webiew',
-            url: url
-        });
+            id: 'goods_detail',
+            params: {goods_id: productId}
+        })
     }
 
     //订售 积分 订单 账户
